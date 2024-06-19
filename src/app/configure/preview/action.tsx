@@ -63,7 +63,7 @@ export const createCheckOutSession = async({configId}:{configId: string}) => {
         },
         metadata: {
             userId: user.id,
-            orderId: order._id.toString() as string,
+            orderId: order._id.toString(),
         },
         line_items: [{price: product.default_price as string, quantity: 1,}]
     })

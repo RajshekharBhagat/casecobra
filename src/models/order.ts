@@ -3,6 +3,7 @@ import { OrderStatus } from "./configuration";
 import { ShippingAddress, shippingAddressSchema } from "./shippingAddress";
 
 export interface Order extends Document {
+  _id: mongoose.Types.ObjectId;
   configurationId: mongoose.Types.ObjectId;
   user: mongoose.Types.ObjectId;
   kindeId: string;
