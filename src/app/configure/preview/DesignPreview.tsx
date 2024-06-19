@@ -29,7 +29,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     ({ value }) => value == phoneModel
   )!;
   
-  useEffect(() => setShowConfetti(true));
+  useEffect(() => setShowConfetti(true),[]);
   let totalPrice = BASE_PRICE;
   if(caseMaterial === 'polycarbonate') {
     totalPrice += PRODUCT_PRICES.material.polycarbonate;
