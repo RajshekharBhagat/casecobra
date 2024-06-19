@@ -15,7 +15,6 @@ export const getAuthStatus = async() => {
 
     const existingUser = await UserModel.findOne({kindId: user.id});
     if(!existingUser) {
-
         const newUser = new UserModel({
             kindId: user.id,
             email: user.email,

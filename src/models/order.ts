@@ -1,6 +1,7 @@
 import mongoose, { Document } from "mongoose";
 import { OrderStatus } from "./configuration";
 import { ShippingAddress, shippingAddressSchema } from "./shippingAddress";
+import { BillingAddress, billingAddressSchema } from "./billingAddress";
 
 export interface Order extends Document {
   _id: mongoose.Types.ObjectId;
@@ -11,6 +12,7 @@ export interface Order extends Document {
   isPaid: boolean;
   status: OrderStatus;
   shippingAddress: ShippingAddress;
+  billingAddress: BillingAddress;
 }
 
 const orderSchema = new mongoose.Schema<Order>({
@@ -42,6 +44,9 @@ const orderSchema = new mongoose.Schema<Order>({
   },
   shippingAddress: {
     type: shippingAddressSchema,
+  },
+  billingAddress: {
+    type: billingAddressSchema,
   }
 });
 

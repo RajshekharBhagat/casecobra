@@ -47,6 +47,13 @@ export async function POST(req: NextRequest) {
             pincode: shippingAddress?.postal_code,
             state: shippingAddress?.state,
           },
+          billingAddress: {
+            name: session.customer_details?.name,
+            street: billingAddress?.line1,
+            city: billingAddress?.city,
+            pincode: billingAddress?.postal_code,
+            state: billingAddress?.state,
+          },
           isPaid: true,
         },
         { new: true }
