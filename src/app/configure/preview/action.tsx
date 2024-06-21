@@ -4,22 +4,28 @@ import { dbConnect } from "@/lib/dbConnect";
 import { stripe } from "@/lib/stripe";
 import ConfigurationModel from "@/models/configuration";
 import OrderModel, { Order } from "@/models/order";
+import UserModel from "@/models/user";
 import { getKindeServerSession ,} from "@kinde-oss/kinde-auth-nextjs/server";
 
 export const createCheckOutSession = async({configId}:{configId: string}) => {
-    await dbConnect();
-    const configuration = await ConfigurationModel.findById(configId);
-    if(!configuration) {
-        throw new Error('No such configuration found');
-    }
-
+    
     const {getUser} = getKindeServerSession();
     const user = await getUser();
 
     if(!user) {
         throw new Error('Your need to be logged in');
     }
-    
+
+    await dbConnect();
+    const configuration = await ConfigurationModel.findById(configId);
+    if(!configuration) {
+        throw new Error('No such configuration found');
+    }
+    const userData = await UserModel.findOne({kindId: user.id});
+    if(!userData) {
+        throw new Error('No such user found, please login');
+    }
+
     const {caseFinish, caseMaterial} = configuration;
     let price = BASE_PRICE;
     if(caseFinish === 'textured') price += PRODUCT_PRICES.finish.textured
@@ -35,6 +41,7 @@ export const createCheckOutSession = async({configId}:{configId: string}) => {
         order = new OrderModel({
             amount: price,
             kindeId: user.id,
+            user: userData?._id,
             configurationId: configuration._id,
         });
         await order.save();

@@ -1,11 +1,11 @@
 import mongoose, { Document } from "mongoose";
-import { OrderStatus } from "./configuration";
+import { Configuration, OrderStatus } from "./configuration";
 import { ShippingAddress, shippingAddressSchema } from "./shippingAddress";
 import { BillingAddress, billingAddressSchema } from "./billingAddress";
 
 export interface Order extends Document {
   _id: mongoose.Types.ObjectId;
-  configurationId: mongoose.Types.ObjectId;
+  configuration: Configuration;
   user: mongoose.Types.ObjectId;
   kindeId: string;
   amount: number;
@@ -13,10 +13,12 @@ export interface Order extends Document {
   status: OrderStatus;
   shippingAddress: ShippingAddress;
   billingAddress: BillingAddress;
+  createdAt: Date,
+  updatedAt: Date,
 }
 
 const orderSchema = new mongoose.Schema<Order>({
-  configurationId: {
+  configuration: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Configuration",
     required: true,
@@ -48,7 +50,7 @@ const orderSchema = new mongoose.Schema<Order>({
   billingAddress: {
     type: billingAddressSchema,
   }
-});
+},{timestamps: true});
 
 const OrderModel =
   (mongoose.models.Order as mongoose.Model<Order>) ||
